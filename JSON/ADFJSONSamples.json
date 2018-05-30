@@ -32,7 +32,7 @@
         "extendedProperties": {}
 }}}
 
-//datasets
+#datasets
 {
 "name": "MyDataset",
 "properties": {

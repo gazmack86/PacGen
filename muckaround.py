@@ -20,8 +20,9 @@ cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
 
 
 cursor = cnxn.cursor()
-cursor.execute('SELECT * FROM meta.PatternTypes')
-
+#cursor.execute('SELECT * FROM meta.PatternTypes')
+#cursor.execute('SELECT name FROM master.sys.databases')
+cursor.execute('SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'')
 for row in cursor:
     print('row = %r' % (row,))
     print('wow')

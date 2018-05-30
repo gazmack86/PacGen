@@ -24,3 +24,4 @@ cursor.execute('SELECT * FROM meta.PatternTypes')
 
 for row in cursor:
     print('row = %r' % (row,))
+    print('wow')

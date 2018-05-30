@@ -1,0 +1,52 @@
+{
+  "name": "LkpsCurrencyDataLakeOut",
+  "properties": {
+    "type": "AzureDataLakeStore",
+    "linkedServiceName": "DataLakeStore",
+    "structure": [ ],
+    "typeProperties": {
+      "folderPath": "Out",
+      "fileName": "Dim.Currency.csv"
+    },
+    "availability": {
+      "frequency": "Day",
+      "interval": 1
+    }
+  }
+}
+
+//Pipline
+{
+  "name": "SomePipeline",
+  "properties": {
+    "activities": [{
+      "type": "DotNetActivity",
+      "linkedServiceName": {
+        "referenceName": "AzureBatchLinkedService",
+        "type": "LinkedServiceReference"
+      },
+		"referenceObjects": { //new bits
+          "linkedServices": [],
+		  "datasets": []
+        },
+        "extendedProperties": {}
+}}}
+
+//datasets
+{
+"name": "MyDataset",
+"properties": {
+"type": "AzureBlob",
+	"linkedService": {
+		"referenceName": "StorageLinkedService",
+		"type": "LinkedServiceReference"
+	},
+	"typeProperties": {
+		"folderPath":"container/folder",
+		"Filename": "file.json",
+		"format":{
+			"type":"JsonFormat"
+			"nestedSeperator": ","
+		}
+	}
+}}

@@ -53,6 +53,27 @@ class format:
 		}
 	}
 }}
+
+{
+    "name": "<name of dataset>",
+    "properties": {
+        "type": "<type of dataset: AzureBlob, AzureSql etc...>",
+        "linkedServiceName": {
+                "referenceName": "<name of linked service>",
+                 "type": "LinkedServiceReference",
+        },
+        "structure": [
+            {
+                "name": "<Name of the column>",
+                "type": "<Name of the type>"
+            }
+        ],
+        "typeProperties": {
+            "<type specific property>": "<value>",
+            "<type specific property 2>": "<value 2>",
+        }
+    }
+}
 '''
 # Instantiate the Dog object
 philo = Dataset("Philo", ObjectType.File)
@@ -65,6 +86,18 @@ mikey = DoDatasetg("Mikey", ObjectType.AzureBlob)
 # Is Philo a mammal?
 #if philo.species == "mammal":
 #    print("{0} is a {1}!".format(philo.name, philo.species))
+
+'''
+For columns in ADF
+
+name:	Name of the column.
+type:	allowed values: Int16, Int32, Int64, Single, Double, Decimal, Byte[],
+Boolean, String, Guid, Datetime, Datetimeoffset, and Timespan
+culture:	.NET-based culture to be used when the type is a .NET type: Datetime or Datetimeoffset.
+The default is en-us
+format	Format string to be used when the type is a .NET type: Datetime or Datetimeoffset.
+Refer to Custom Date and Time Format Strings on how to format datetime.
+'''
 
 '''
 import json

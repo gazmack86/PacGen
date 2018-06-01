@@ -103,7 +103,7 @@ Replace <storageaccountname> and <storageaccountkey> with name and key of your A
 
 
 '''
-reate datasets
+Create datasets
 In this section, you create two datasets: one for the source and the other for the sink.
 
 Create a dataset for source Azure Blob

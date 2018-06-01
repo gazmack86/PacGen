@@ -2,9 +2,7 @@ import json
 import pyodbc
 import os
 
-absolute_path = os.path.dirname(os.path.abspath(__file__))
-file_path = 'Y:\Code\PacGen\PacGen\_Config\ImportSource-Connection.json'
-with open(file_path,'r') as f_obj:
+with open('Y:\Code\PacGen\PacGen\_Config\ImportSource-Connection.json','r') as f_obj:
     connectionAttributes = json.load(f_obj)
 
 cnxn = pyodbc.connect("Driver=" + connectionAttributes['driver'] + ";" +
@@ -12,13 +10,25 @@ cnxn = pyodbc.connect("Driver=" + connectionAttributes['driver'] + ";" +
                       "Database=" + connectionAttributes['database'] + ";" +
                       "Trusted_Connection=yes;")
 
+with open('Y:\Code\PacGen\PacGen\_Config\Meta-Connection.json','r') as f_obj:
+    metaConnectionAttributes = json.load(f_obj)
+
+mcnxn = pyodbc.connect("Driver=" + metaConnectionAttributes['driver'] + ";" +
+                      "Server=" + metaConnectionAttributes['instanceName'] + ";" +
+                      "Database=" + metaConnectionAttributes['database'] + ";" +
+                      "Trusted_Connection=yes;")
+
 tableCursor = cnxn.cursor()
-tables = tableCursor.execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'")
+tables = tableCursor.execute('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE=\'BASE TABLE\'')
 tableNames = []
 for tableRow in tables:
     tableNames.append(tableRow.TABLE_NAME)
 
-mergeCursor = cnxn.cursor()
+mergeCursor = mcnxn.cursor()
+mergeCursor.execute('IF OBJECT_ID(\'tempdb..#ColumnMetaTemp\') IS NOT NULL DROP TABLE #ColumnMetaTemp;')
+mergeCursor.execute('SELECT TOP 1 * INTO #ColumnMetaTemp FROM [PacGenCatalog].[meta].[Columns];')
+mergeCursor.execute('TRUNCATE TABLE #ColumnMetaTemp;')
+
 columnCursor = cnxn.cursor()
 for name in tableNames:
     metaRows = columnCursor.execute("SELECT OBJECT_SCHEMA_NAME(T.object_id) AS schema__name " +
@@ -42,3 +52,39 @@ for name in tableNames:
         ' data__type, is_nullable, max_length, precision, scale')
     for row in metaRows:
         print(row)
+
+
+#mergeCursor.execute(
+#MERGE Production.ProductInventory AS target
+#USING (SELECT ProductID, SUM(OrderQty) FROM Sales.SalesOrderDetail AS sod
+#    JOIN Sales.SalesOrderHeader AS soh
+#    ON sod.SalesOrderID = soh.SalesOrderID
+#    AND soh.OrderDate = @OrderDate
+#    GROUP BY ProductID) AS source (ProductID, OrderQty)
+#ON (target.ProductID = source.ProductID)
+#WHEN MATCHED AND target.Quantity - source.OrderQty <= 0
+#    THEN DELETE
+#WHEN MATCHED
+#    THEN UPDATE SET target.Quantity = target.Quantity - source.OrderQty,
+#                    target.ModifiedDate = GETDATE()
+#OUTPUT $action, Inserted.ProductID, Inserted.Quantity,
+#    Inserted.ModifiedDate, Deleted.ProductID,
+#    Deleted.Quantity, Deleted.ModifiedDate;
+#)
+
+
+        #INSERT INTO table_name ([ColumnID]
+          #,[ObjectID]
+          #,[ObjectName]
+          #,[ColumnName]
+          #,[IsBusinessKey]
+          #,[IsPrimaryKey]
+          #,[IsUniqueKey]
+          #,[DataTypeID]
+          #,[StringLength]
+          #,[NumericLenth]
+          #,[Scale]
+          #,[Precision]
+          #,[CustomSQL]
+          #,[CustomSSIS])
+        #VALUES (value1, value2, value3, ...);)

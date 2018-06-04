@@ -31,16 +31,16 @@ mergeCursor.execute('TRUNCATE TABLE #ColumnMetaTemp;')
 
 columnCursor = cnxn.cursor()
 for name in tableNames:
-    metaRows = columnCursor.execute("SELECT OBJECT_SCHEMA_NAME(T.object_id) AS schema__name " +
-    "    , T.name AS table__name " +
-    "    , C.name AS column__name " +
-    "    , C.is_identity " +
-    "    , Y.name AS data__type " +
-    "    , C.is_nullable " +
-    "    , C.max_length " +
-    "    , C.precision " +
-    "    , C.scale " +
-    ", C.collation_name " +
+    metaRows = columnCursor.execute('SELECT OBJECT_SCHEMA_NAME(T.object_id) AS SchemaName' +
+    '    , T.name AS [TableName]' +
+    '    , C.name AS [ColumnName]' +
+    '    , C.is_identity AS [IsIdentity]' +
+    '    , Y.name AS [DataType]' +
+    '    , C.is_nullable AS [Nullable]' +
+    '    , C.max_length AS [Length]' +
+    '    , C.precision AS [precision]' +
+    '    , C.scale AS [Scale]' +
+    '   , C.collation_name AS [collation]' +
     "FROM sys.tables T INNER JOIN sys.columns C " +
     "ON T.object_id = C.object_id " +
     "INNER JOIN sys.types Y " +
@@ -51,7 +51,8 @@ for name in tableNames:
         'schema__name, table__name, column__name, is_identity,' +
         ' data__type, is_nullable, max_length, precision, scale')
     for row in metaRows:
-        print(row)
+        #print(row)
+        mergeCursor.execute('INSERT INTO #ColumnMetaTemp (ObjectID, ObjectName, ColumnName, IsBusinesskey, IsPrimaryKey, IsUniqueKey, DataTypeId, StringLength, ) VALUES (1, table__name, column__name, 0, is_identity, 0, data__type, 0,  ...);')
 
 
 #mergeCursor.execute(

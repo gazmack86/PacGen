@@ -31,7 +31,7 @@ mergeCursor.execute('TRUNCATE TABLE #ColumnMetaTemp;')
 
 columnCursor = cnxn.cursor()
 for name in tableNames:
-    metaRows = columnCursor.execute('SELECT OBJECT_SCHEMA_NAME(T.object_id) AS SchemaName' +
+    metaRows = columnCursor.execute('SELECT OBJECT_SCHEMA_NAME(T.object_id) AS [SchemaName]' +
     '    , T.name AS [TableName]' +
     '    , C.name AS [ColumnName]' +
     '    , C.is_identity AS [IsIdentity]' +
@@ -52,7 +52,7 @@ for name in tableNames:
         ' data__type, is_nullable, max_length, precision, scale')
     for row in metaRows:
         #print(row)
-        mergeCursor.execute('INSERT INTO #ColumnMetaTemp (ObjectID, ObjectName, ColumnName, IsBusinesskey, IsPrimaryKey, IsUniqueKey, DataTypeId, StringLength, ) VALUES (1, table__name, column__name, 0, is_identity, 0, data__type, 0,  ...);')
+        mergeCursor.execute('INSERT INTO #ColumnMetaTemp (SchemaName, TableName, ColumnName, IsIdentity, DatNullableaType, IsUniqueKey, DataTypeId, StringLength, ) VALUES (1, table__name, column__name, 0, is_identity, 0, data__type, 0,  ...);')
 
 
 #mergeCursor.execute(

@@ -18,7 +18,6 @@ with open(file_path,'r') as f_obj:
 
 
 #Initialize database parameters (CHANGE THIS)
-#In [2]:
 SERVER_NAME   = 'ENTER SERVER_NAME'
 DATABASE_NAME = 'ENTER SQLDW DATABASE NAME'
 USERID        = 'ENTER DB USERID'

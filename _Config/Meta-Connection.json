@@ -1,9 +1,0 @@
-[
-  {
-    "ConnectionType":"Metadata",
-    "Driver":"{SQL Server}",
-    "Server":"localhost\\SQLEXPRESS02_16",
-    "Database":"PacGenCatalog",
-    "TrustedConnection":"yes"
-  }
-]

@@ -1,1 +1,9 @@
-{ "name":"Catalog", "database":"PacGenCatalog", "instanceName":"localhost\\SQLEXPRESS02_16", "driver":"{SQL Server Native Client 11.0}" }
+[
+  {
+    "ConnectionType":"Metadata",
+    "Driver":"{SQL Server}",
+    "Server":"localhost\\SQLEXPRESS02_16",
+    "Database":"PacGenCatalog",
+    "TrustedConnection":"yes"
+  }
+]
